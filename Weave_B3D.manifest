@@ -1,0 +1,11 @@
+{
+    "autodeskProduct": "Fusion360",
+    "type": "addin",
+    "id": "6e8798d1-793d-44cc-817c-f14604441c9D",
+    "author": "Boceto3D",
+    "description": "Crea efecto tejido para imprimir en 3D.",
+    "version": "0.1.0",
+    "runOnStartup": false,
+    "supportedOS": "windows|mac",
+    "editEnabled": true
+}

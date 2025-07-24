@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayuda del Comando: Cuerdas Serpenteantes</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .header-logo {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      box-shadow: 0 0px 0px rgba(0,0,0,0);
+    }
+    h1 {
+      color: #0055a5; /* Un color azul oscuro */
+      flex-grow: 1; /* Permite que el título ocupe el espacio restante */
+      text-align: center;
+      margin: 0; /* Elimina el margen por defecto */
+      padding: 0;
+      border-bottom: none; /* Se mueve el borde al header */
+    }
+    h2, h3 {
+      color: #0055a5;
+      border-bottom: 2px solid #e9ecef;
+      padding-bottom: 10px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 6px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #dee2e6;
+      margin: 40px 0;
+    }
+    ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    b, strong {
+        color: #d9534f; /* Un color rojo suave para resaltar */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="./imgs/Logo.png" alt="Logo Boceto3D" class="header-logo">
+      <h1>Ayuda: Cuerdas Serpenteantes</h1>
+    </header>
+    
+    <section>
+      <h2>Descripción General</h2>
+      <p>Este comando está pensado para generar un patrón de cuerdas serpenteantes alrededor de un cuerpo sólido. El cuerpo seleccionado permanece intacto; solo se utiliza su forma para crear múltiples cuerpos nuevos en forma de ondas sinusoidales a lo largo del eje Z.</p>
+      <img src="./imgs/Panel.png" alt="Ilustración del panel de configuración" width="400"/>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Parámetros de Configuración</h2>
+
+      <h3>Seleccionar cuerpo</h3>
+      <p>Aquí se selecciona el cuerpo al que le deseamos generar su forma tejida. Solo acepta un cuerpo por proceso.</p>
+
+      <h3>Ondas totales</h3>
+      <p>Este valor controla cuántas ondas completas aparecen a lo largo del perímetro del cuerpo.</p>
+      <ul>
+        <li>Un valor <b>bajo</b> (ej. 10): Es rápido, pero crea muy pocas ondas para piezas grandes.</li>
+        <li>Un valor <b>moderado</b> (ej. 60): Es rápido y crea suficientes ondas para un buen efecto tejido.</li>
+        <li>Un valor <b>alto</b> (ej. 100): Incrementará considerablemente el tiempo de cálculo, pero puede verse bien en piezas grandes.</li>
+      </ul>
+
+      <h3>Grosor de la cuerda</h3>
+      <p>Este valor especifica el grosor de la cuerda que se va a generar. Este valor puede no ser exacto, ya que en ocasiones Fusion no puede generar el grosor para cualquier geometría y el plugin lo reintenta con un valor un poco más pequeño o un poco más grande.</p>
+      <ul>
+        <li>Un valor <b>bajo</b> (ej. 0.2mm): Es rápido, pero puede ser demasiado delgado para algunas aplicaciones.</li>
+        <li>Un valor <b>alto</b> (ej. 3.2mm): Puede ocasionar errores al ser difícil de dibujar en geometrías complejas.</li>
+      </ul>
+      <img src="./imgs/Grosor.png" alt="Ilustración del grosor de la cuerda" width="300"/>
+
+      <h3>Altura de la cuerda</h3>
+      <p>Este valor controla la altura de cada cuerda generada, ideal para generar cuerdas con varias capas de impresión.</p>
+      <ul>
+        <li>Ejemplo: Si imprimes a 0.4mm de altura de capa y quieres que se impriman 2 capas por cuerda, deberías colocar 0.8mm en este campo.</li>
+      </ul>
+      <img src="./imgs/Altura.png" alt="Ilustración de la altura de la cuerda" width="300"/>
+
+      <h3>Amplitud máxima de onda</h3>
+      <p>Este valor controla qué tan grande será cada onda de la cuerda que se va a generar. El plugin ajustará este valor automáticamente para lugares muy estrechos.</p>
+      <ul>
+        <li>Un valor <b>bajo</b> (ej. 0.1mm): Genera un efecto ondulado apenas perceptible.</li>
+        <li>Un valor <b>alto</b> (ej. 5mm): Podría generar voladizos difíciles de imprimir.</li>
+      </ul>
+      <img src="./imgs/Amplitud.png" alt="Ilustración de la amplitud de onda" width="300"/>
+
+      <h3>Desfase de onda entre cuerdas (0-360)</h3>
+      <p>Este valor controla cómo se dibujan las ondas de cada cuerda y el desfase que hay entre ellas.</p>
+      <ul>
+        <li>Un valor de <b>0</b> o <b>360</b>: Genera todas las ondas alineadas verticalmente.</li>
+        <li>Un valor de <b>180</b>: Genera un efecto tejido clásico, al alternar las ondas entre cuerda y cuerda.</li>
+      </ul>
+      <img src="./imgs/Desfase.png" alt="Ilustración del desfase de onda" width="600"/>
+
+      <h3>Desfase interno/externo (-2mm/+2mm)</h3>
+      <p>Este valor aplica un desfase general a las cuerdas hacia adentro o hacia afuera del cuerpo principal.</p>
+      <ul>
+        <li><b>0mm</b>: Genera cuerdas con ondas que, en su punto más interno, tocan la superficie del cuerpo original.</li>
+      </ul>
+      <img src="./imgs/Offset.png" alt="Ilustración del desfase general" width="900"/>
+
+      <h3>Generar solo el patrón</h3>
+      <p>Esta casilla de verificación sirve para generar solo el patrón de las cuerdas y no todas las cuerdas que habría en el cuerpo seleccionado.</p>
+      <ul>
+        <li>Ideal si no estás seguro(a) de todos tus parámetros y quieres previsualizar el resultado con algunas cuerdas antes de aplicarlo a un diseño grande.</li>
+        <li>Ideal en caso de que se lo quieras aplicar a una forma simple (como un cilindro). Es más rápido generar solo el patrón y luego repetirlo manualmente.</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
