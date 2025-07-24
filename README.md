@@ -1,6 +1,8 @@
 # Weave_B3D
 This Autodesk Fusion 360 add-in generates a serpentine or wavy pattern on the surface of a selected B-Rep body.
 
+![Configuration Panel Illustration](./resources/imgs/Serpenteante.png)
+
 ## General Description
 
 This command is designed to generate a serpentine rope pattern around a solid body. The selected body remains intact; its shape is only used to create multiple new bodies in the form of sinusoidal waves along the Z-axis.
