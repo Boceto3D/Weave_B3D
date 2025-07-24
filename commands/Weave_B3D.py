@@ -439,91 +439,38 @@ class SerpentineCommandExecuteHandler(adsk.core.CommandEventHandler):
                         'curve' (SketchEntity) and a boolean 'is_reversed'.
                         Returns an empty list if the profile is invalid.
         """
-        app = adsk.core.Application.get()
-        ui = app.userInterface
-
+        # Assumes the profile has one loop.
         profile_loop = profile.profileLoops.item(0)
-        remaining_curves = [c.sketchEntity for c in profile_loop.profileCurves]
-
-        if not remaining_curves:
-            return []
-
-        if len(remaining_curves) == 1:
-            return [{'curve': remaining_curves[0], 'is_reversed': False}]
+        curves_in_loop = [c.sketchEntity for c in profile_loop.profileCurves]
+        if not curves_in_loop: return []
+        if len(curves_in_loop) == 1:
+            return [{'curve': curves_in_loop[0], 'is_reversed': False}]
         
-        connection_tolerance = 0.01 
+        tolerance = 0.0001
         ordered_curves_data = []
         
-        # --- Find a deterministic starting curve ---
-        # Find the curve containing the point with the lowest Y, then lowest X value.
-        start_curve = None
-        min_y = float('inf')
-        min_x = float('inf')
+        current_curve = curves_in_loop.pop(0)
+        ordered_curves_data.append({'curve': current_curve, 'is_reversed': False})
+        last_end_point = current_curve.endSketchPoint
 
-        for curve in remaining_curves:
-            # Check both start and end points of the curve
-            for point in [curve.startSketchPoint.geometry, curve.endSketchPoint.geometry]:
-                if point.y < min_y - connection_tolerance:
-                    min_y = point.y
-                    min_x = point.x
-                    start_curve = curve
-                elif abs(point.y - min_y) < connection_tolerance and point.x < min_x:
-                    min_x = point.x
-                    start_curve = curve
-        
-        if not start_curve: # Fallback if no start curve is found
-            start_curve = remaining_curves[0]
-
-        remaining_curves.remove(start_curve)
-
-        # Determine the starting point and direction for the chosen start_curve
-        start_point_geom = start_curve.startSketchPoint.geometry
-        if abs(start_point_geom.y - min_y) < connection_tolerance and abs(start_point_geom.x - min_x) < connection_tolerance:
-            # The start point of the curve is the "lowest" point, so we traverse forward.
-            ordered_curves_data.append({'curve': start_curve, 'is_reversed': False})
-            last_end_point = start_curve.endSketchPoint
-        else:
-            # The end point of the curve is the "lowest" point, so we traverse "backwards".
-            ordered_curves_data.append({'curve': start_curve, 'is_reversed': True})
-            last_end_point = start_curve.startSketchPoint
-
-        # --- Sequentially find the next closest curve ---
-        while remaining_curves:
-            min_dist = float('inf')
-            best_match_index = -1
-            is_reversed_for_best_match = False
-
-            # Find the curve in the remaining pool with an endpoint closest to the last endpoint
-            for i, next_curve in enumerate(remaining_curves):
-                dist_to_start = next_curve.startSketchPoint.geometry.distanceTo(last_end_point.geometry)
-                dist_to_end = next_curve.endSketchPoint.geometry.distanceTo(last_end_point.geometry)
-
-                if dist_to_start < min_dist:
-                    min_dist = dist_to_start
-                    best_match_index = i
-                    is_reversed_for_best_match = False
-
-                if dist_to_end < min_dist:
-                    min_dist = dist_to_end
-                    best_match_index = i
-                    is_reversed_for_best_match = True
-            
-            # If the closest found curve is within tolerance, consider it connected.
-            if best_match_index != -1 and min_dist < connection_tolerance:
-                best_match_curve = remaining_curves.pop(best_match_index)
-                
-                ordered_curves_data.append({'curve': best_match_curve, 'is_reversed': is_reversed_for_best_match})
-
-                # Update the last_end_point for the next iteration
-                if is_reversed_for_best_match:
-                    last_end_point = best_match_curve.startSketchPoint
-                else:
-                    last_end_point = best_match_curve.endSketchPoint
-            else:
-                # If no curve is found within the tolerance, the path is broken.
-                #ui.messageBox(f"Warning: Could not find a connecting curve for profile. Path may be broken. Found {len(ordered_curves_data)} of {len(profile_loop.profileCurves)} curves.")
-                break # Exit the loop
-
+        while curves_in_loop:
+            found_next = False
+            for i, next_curve in enumerate(curves_in_loop):
+                # Case 1: Next curve starts where the last one ended (normal direction).
+                if next_curve.startSketchPoint.geometry.distanceTo(last_end_point.geometry) < tolerance:
+                    ordered_curves_data.append({'curve': curves_in_loop.pop(i), 'is_reversed': False})
+                    last_end_point = ordered_curves_data[-1]['curve'].endSketchPoint
+                    found_next = True
+                    break
+                # Case 2: Next curve ENDS where the last one ended (reversed direction).
+                elif next_curve.endSketchPoint.geometry.distanceTo(last_end_point.geometry) < tolerance:
+                    ordered_curves_data.append({'curve': curves_in_loop.pop(i), 'is_reversed': True})
+                    last_end_point = ordered_curves_data[-1]['curve'].startSketchPoint # New end is the START of the reversed curve.
+                    found_next = True
+                    break
+            if not found_next:
+                # Could not find a continuous path.
+                break
         return ordered_curves_data
 
     def extract_curve_data(self, ordered_curves_data, sketch, z_height, wave_frequency, final_amplitude):
