@@ -3,6 +3,10 @@ This Autodesk Fusion 360 add-in generates a serpentine or wavy pattern on the su
 
 ![Configuration Panel Illustration](./resources/imgs/Serpenteante.png)
 
+## Usage
+First see [How to install sample Add-Ins and Scripts](https://help.autodesk.com/view/fusion360/ENU/?guid=GUID-B81A4B10-3781-4925-94C6-47DA85A4F65A)
+For spanish: [Ayuda](./resources/Weave_B3D_help.html)
+
 ## General Description
 
 This command is designed to generate a serpentine rope pattern around a solid body. The selected body remains intact; its shape is only used to create multiple new bodies in the form of sinusoidal waves along the Z-axis.
@@ -74,3 +78,14 @@ This checkbox is used to generate only the pattern of the ropes and not all the 
 
 * Ideal if you are not sure about all your parameters and want to preview the result with a few ropes before applying it to a large design.
 * Ideal if you want to apply it to a simple shape (like a cylinder). It is faster to generate only the pattern and then repeat it manually.
+
+---
+
+## License
+Licensed under the terms of the [Attribution-NonCommercial-ShareAlike 4.0 International](LICENSE.md).
+
+---
+
+## Written by 
+Written by [Jacobo Castro](https://www.linkedin.com/in/icobiche/) for [Boceto3D](https://www.instagram.com/boceto.3d/) <br />
+(Autodesk Developer Network)
