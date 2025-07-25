@@ -5,7 +5,6 @@ This Autodesk Fusion 360 add-in generates a serpentine or wavy pattern on the su
 
 ## Usage
 First see [How to install sample Add-Ins and Scripts](https://help.autodesk.com/view/fusion360/ENU/?guid=GUID-B81A4B10-3781-4925-94C6-47DA85A4F65A)
-For spanish: [Ayuda](./resources/Weave_B3D_help.html)
 
 ## General Description
 
@@ -88,4 +87,4 @@ Licensed under the terms of the [Attribution-NonCommercial-ShareAlike 4.0 Intern
 
 ## Written by 
 Written by [Jacobo Castro](https://www.linkedin.com/in/icobiche/) for [Boceto3D](https://www.instagram.com/boceto.3d/) <br />
-(Autodesk Developer Network)
+(Electronic and Software Developer)
